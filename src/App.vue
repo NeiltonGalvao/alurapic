@@ -15,19 +15,18 @@ export default {
   data() {
     return {
     titulo: 'AluraPic',
-      fotos :[
-        {
-          url : 'https://encrypted-tbn2.gstatic.com/images?q=tbn:ANd9GcTwV4kVzT5McBdGSgqlVeRzubrNH_mOrrkKseDOGFURq20HmsrelEfMU7It',
-          titulo: 'Cachorro'
-        },
-        {
-          url: 'https://encrypted-tbn2.gstatic.com/images?q=tbn:ANd9GcTwV4kVzT5McBdGSgqlVeRzubrNH_mOrrkKseDOGFURq20HmsrelEfMU7It',
-          titulo: 'Cachorro2'
-        }
-      ]          
+      fotos :[]          
     }  
-  }
-}    
+  },
+  created() {
+    //buscaremos nossas fotos aqui
+    let promise = this.$http.get('http://localhost:3000/v1/fotos')
+    promise 
+      .then(res => res.json())
+      .then(fotos => this.fotos = fotos, err => console.log(err));
+      
+  }    
+}
 </script>
 
 <style>
