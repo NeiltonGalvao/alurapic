@@ -3,57 +3,37 @@
 <template>
   <div class="corpo">
 
-    <h1 class="centralizado">{{ titulo }}</h1>
+    <meu-menu :rotas="routes"/>
 
-    <ul class="lista-fotos">
-
-      <li class="lista-fotos-item" v-for="foto in fotos">
-
-        <meu-painel :titulo="foto.titulo">
-          <img class="imagem-responsiva" :src="foto.url" :alt="foto.titulo">
-        </meu-painel>
-
-      </li>
-    </ul>
+    <transition name="pagina">
+      <router-view></router-view>
+    </transition>
 
   </div>
 </template>
-<!-- código posterior omitido -->
-
 <script>
 
-//importando o painel
-import Painel from './components/shared/painel/Painel.vue';
+import { routes }  from './routes';
+import Menu from './components/shared/menu/Menu.vue';
 
 export default {
 
   components: {
-    'meu-painel': Painel
-   },
-
-
-  data() {
-    return {
-    titulo: 'AluraPic',
-      fotos :[]          
-    }  
+    'meu-menu' : Menu
   },
+  
+  data() {
 
-  created() {
-    
-    this.$http.get('http://localhost:3000/v1/fotos')
-      .then(res => res.json())
-      .then(fotos => this.fotos = fotos, err => console.log(err));
-          
+        return {
+
+      routes
+    }
+
   }
-}    
+
+}
 </script>
-
 <style>
-
-  .titulo {
-    text-align: center;
-  }
 
   .corpo {
     font-family: Helvetica, sans-serif;
@@ -61,38 +41,11 @@ export default {
     width: 96%;
   }
 
-  .lista-fotos {
-    list-style: none;
+  .pagina-enter-active, .pagina-leave-active {
+    transition: opacity .2s
+  }
+  .pagina-enter, .pagina-leave-active {
+    opacity: 0
   }
 
-  .lista-fotos .lista-fotos-item {
-    display: inline-block;
-  }
-
-  .imagem-responsiva {
-    width: 100%;
-  }
-
-  /* estilo do painel */ 
-
-   .painel {
-    padding: 0 auto;
-    border: solid 2px grey;
-    display: inline-block;
-    margin: 5px;
-    box-shadow: 5px 5px 10px grey;
-    width: 200px;
-    height: 100%;
-    vertical-align: top;
-    text-align: center;
-  }
-
-  .painel .painel-titulo {
-    text-align: center;
-    border: solid 2px;
-    background: lightblue;
-    margin: 0 0 15px 0;
-    padding: 10px;
-    text-transform: uppercase;
-  }
 </style>
